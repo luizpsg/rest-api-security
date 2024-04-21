@@ -25,13 +25,13 @@ public class DemoSecurityConfig {
     UserDetails mary = User.builder()
         .username("mary")
         .password("{noop}test123")
-        .roles("MANAGER")
+        .roles("EMPLOYEE", "MANAGER")
         .build();
 
     UserDetails susan = User.builder()
         .username("susan")
         .password("{noop}test123")
-        .roles("ADMIN")
+        .roles("EMPLOYEE", "MANAGER", "ADMIN")
         .build();
 
     return new InMemoryUserDetailsManager(john, mary, susan);
@@ -45,7 +45,7 @@ public class DemoSecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
         .requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
         .requestMatchers(HttpMethod.POST, "/api/employees").hasRole("MANAGER")
-        .requestMatchers(HttpMethod.PUT, "/api/employees/").hasRole("MANAGER")
+        .requestMatchers(HttpMethod.PUT, "/api/employees/**").hasRole("MANAGER")
         .requestMatchers(HttpMethod.DELETE, "/api/employees/**").hasRole("ADMIN")
     );
 
